@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IoT Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>
+</head>
+<body>
+    <h2>IoT Time Series Dashboard</h2>
+    <canvas id="chart" width="1000" height="400"></canvas>
+
+    <script>
+        async function loadChart() {
+            const response = await fetch("/api/data");
+            const data = await response.json();
+
+            const datasets = [];
+
+            for (const [device, values] of Object.entries(data)) {
+                datasets.push({
+                    label: `CO (${device})`,
+                    data: values.timestamps.map((t, i) => ({ x: t, y: values.co[i] })),
+                    borderColor: 'red',
+                    fill: false
+                });
+                datasets.push({
+                    label: `Humidity (${device})`,
+                    data: values.timestamps.map((t, i) => ({ x: t, y: values.humidity[i] })),
+                    borderColor: 'blue',
+                    fill: false
+                });
+                datasets.push({
+                    label: `Temperature (${device})`,
+                    data: values.timestamps.map((t, i) => ({ x: t, y: values.temp[i] })),
+                    borderColor: 'green',
+                    fill: false
+                });
+            }
+
+            const ctx = document.getElementById("chart").getContext("2d");
+            new Chart(ctx, {
+                type: 'line',
+                data: { datasets },
+                options: {
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: { unit: 'minute' },
+                            title: { display: true, text: "Timestamp" }
+                        },
+                        y: {
+                            beginAtZero: false,
+                            title: { display: true, text: "Sensor Value" }
+                        }
+                    }
+                }
+            });
+        }
+
+        loadChart();
+    </script>
+</body>
+</html>

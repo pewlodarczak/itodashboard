@@ -1,0 +1,4 @@
+https://www.kaggle.com/code/chaozhuang/iot-telemetry-sensor-data-analysis
+
+Welcher der 3 Sensoren hat die grössten Schwankungen?
+
