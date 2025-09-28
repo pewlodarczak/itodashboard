@@ -1,4 +1,4 @@
 mongodb:
-  uri: "mongodb+srv://pwlodarczak:admin@cluster0.6m1bs.mongodb.net/sensor_data?retryWrites=true&w=majority"
+  uri: "mongodb+srv://<uid:pw>@cluster0.6m1bs.mongodb.net/sensor_data?retryWrites=true&w=majority"
   database: "sensor_data"
   collection: "telemetry"
